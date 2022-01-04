@@ -13,7 +13,7 @@ jobs:
     env:
       POSTGRES_IMAGE: "postgres:11.6-alpine"
       CLAIR_VERSION: "v2.1.7"
-      CLAIR_LOCAL_SCAN_IMAGE: "arminc/clair-local-scan"
+      CLAIR_LOCAL_SCAN_IMAGE: "shuangyuly/clair-local-scan"
 
     steps:
       - name: Checkout code
@@ -65,8 +65,8 @@ jobs:
         run: |
           docker stop clair
           docker stop postgres
-          docker commit postgres arminc/clair-db:$(date +%Y-%m-%d)
-          docker tag arminc/clair-db:$(date +%Y-%m-%d) arminc/clair-db:latest
+          docker commit postgres shuangyuly/clair-db:$(date +%Y-%m-%d)
+          docker tag shuangyuly/clair-db:$(date +%Y-%m-%d) shuangyuly/clair-db:latest
           docker tag $CLAIR_LOCAL_SCAN_IMAGE ${CLAIR_LOCAL_SCAN_IMAGE}:${CLAIR_VERSION}_${GITHUB_SHA}
           docker images
       - name: Login to DockerHub
@@ -78,5 +78,5 @@ jobs:
         run: |
           docker push ${CLAIR_LOCAL_SCAN_IMAGE}:${CLAIR_VERSION}_${GITHUB_SHA}
           docker push $CLAIR_LOCAL_SCAN_IMAGE:latest
-          docker push arminc/clair-db:$(date +%Y-%m-%d)
-          docker push arminc/clair-db:latest
+          docker push shuangyuly/clair-db:$(date +%Y-%m-%d)
+          docker push shuangyuly/clair-db:latest
